@@ -1,14 +1,7 @@
-# 1. Build stage
-FROM node:20-alpine as build
+FROM python:3.11-slim
 WORKDIR /app
-COPY package*.json ./
-RUN npm install
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
-RUN npm run build
-
-# 2. Production stage (using Nginx to serve the static files)
-FROM nginx:stable-alpine
-# This is where we would configure HTTPS in a real production server
-COPY --from=build /app/dist /usr/share/nginx/html
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+EXPOSE 8000
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
