@@ -6,11 +6,11 @@ import nltk
 
 origins = [
     "http://localhost:5173",                 # Local development
-    "https://sentic-face-ui.onrender.com/" # Your new LIVE frontend URL
+    "https://sentic-face-ui.onrender.com/" # LIVE frontend URL
 ]
  
 # 1. Initialize the AI Brain (Lexicon)
-# This downloads the 'dictionary' of emotional words
+# downloads the 'dictionary' of emotional words
 nltk.download('vader_lexicon')
 
 app = FastAPI(
@@ -20,7 +20,7 @@ app = FastAPI(
 )
 
 # 2. Enable CORS (The Bridge to your Frontend)
-# This allows your React app (face) to talk to your Python app (brain)
+#  allows React app to talk to Python app
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -66,7 +66,7 @@ async def analyze_sentiment(request: AnalysisRequest):
         }
     }
 
-# This is a 'Health Check' endpoint
+# 'Health Check' endpoint
 @app.get("/")
 def home():
     return {"status": "Sentic-API is online and healthy"}
