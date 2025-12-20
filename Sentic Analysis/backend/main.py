@@ -4,6 +4,11 @@ from pydantic import BaseModel, Field
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 import nltk
 
+origins = [
+    "http://localhost:5173",                 # Local development
+    "https://sentic-face-ui.onrender.com/" # Your new LIVE frontend URL
+]
+ 
 # 1. Initialize the AI Brain (Lexicon)
 # This downloads the 'dictionary' of emotional words
 nltk.download('vader_lexicon')
@@ -18,7 +23,7 @@ app = FastAPI(
 # This allows your React app (face) to talk to your Python app (brain)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, list specific URLs
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
