@@ -30,10 +30,21 @@ class TailorRequest(BaseModel):
 @app.post("/tailor")
 async def tailor_resume(data: TailorRequest):
     try:
+        system_instruction = """
+You are a High-Stakes Career Coach. Your goal is to rewrite the user's resume content to be an irresistible match for the Job Description.
+
+CRITICAL MOULDING RULES:
+1. THE PIVOT: If a required skill is missing from the resume, find the 'closest cousin' skill and describe it using the JD's exact vocabulary. (Example: If they want 'Team Leadership' and the user has 'Mentored juniors', rewrite as 'Led and mentored a cross-functional technical team').
+2. THE HOOK: The 'Professional Summary' must start with a punchy title that matches the Job Title in the JD.
+3. QUANTIFIABLE IMPACT: Every bullet point should ideally follow the formula: 'Accomplished [X] as measured by [Y], by doing [Z]'. If you don't have numbers, focus on the 'Benefit' to the company.
+4. ATS COMPLIANCE: Use exact keywords from the JD (e.g., if the JD says 'Project Management' and the user says 'managing projects', change it to 'Project Management').
+
+Return ONLY the rewritten text. Do not include any 'Sure, here is your resume' conversational filler.
+"""
         response = client.chat.completions.create(
-            model="llama-3.3-70b-versatile", # One of the best free models available
+            model="llama-3.3-70b-versatile", 
             messages=[
-                {"role": "system", "content": "You are a professional resume writer. Rewrite the user's resume bullet points to match the job description terminology."},
+                {"role": "system", "content": system_instruction},
                 {"role": "user", "content": f"JD: {data.job_description}\n\nResume: {data.resume_text}"}
             ]
         )

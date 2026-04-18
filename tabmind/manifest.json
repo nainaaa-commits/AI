@@ -1,0 +1,17 @@
+{
+    "manifest_version": 3,
+    "name": "TabMind",
+    "version": "1.0",
+    "description": "organizes your tabs intelligently using AI",
+    "permissions": ["tabs", "storage"],
+    "host_permissions": [
+  "https://api.groq.com/*"
+],
+    "action": {
+        "default_popup": "popup.html",
+        "default_title": "TabMind"
+    },
+    "background": {
+        "service_worker": "background.js"
+    }
+}
